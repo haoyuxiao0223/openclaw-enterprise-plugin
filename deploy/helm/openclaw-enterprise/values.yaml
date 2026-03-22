@@ -1,0 +1,75 @@
+replicaCount: 2
+
+image:
+  repository: openclaw/enterprise
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 18789
+  metricsPort: 9090
+
+ingress:
+  enabled: false
+  className: nginx
+  hosts:
+    - host: openclaw.example.com
+      paths:
+        - path: /
+          pathType: Prefix
+
+enterprise:
+  enabled: true
+  kernel:
+    storage:
+      backend: postgres
+    queue:
+      backend: redis
+    cache:
+      backend: redis
+    eventBus:
+      backend: redis
+    lock:
+      backend: redis
+  governance:
+    identity:
+      provider: token
+    authorization:
+      engine: scope
+  audit:
+    sinks:
+      - type: log
+      - type: storage
+  reliability:
+    metrics:
+      provider: prometheus
+
+postgres:
+  enabled: true
+  auth:
+    username: openclaw
+    # CHANGE THIS in production — default is for local development only
+    password: openclaw
+    database: openclaw
+
+redis:
+  enabled: true
+
+resources:
+  limits:
+    cpu: 1000m
+    memory: 1Gi
+  requests:
+    cpu: 250m
+    memory: 256Mi
+
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 70
+
+serviceMonitor:
+  enabled: false
+  interval: 30s

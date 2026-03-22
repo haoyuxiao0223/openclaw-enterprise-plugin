@@ -1,0 +1,16 @@
+{
+  "id": "enterprise",
+  "name": "Enterprise Mode",
+  "description": "Multi-tenant governance, audit, isolation, collaboration, and reliability for enterprise deployments",
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "enabled": {
+        "type": "boolean",
+        "default": false,
+        "description": "Enable enterprise multi-tenant features"
+      }
+    }
+  }
+}

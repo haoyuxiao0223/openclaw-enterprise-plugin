@@ -1,0 +1,77 @@
+{
+  "name": "@openclaw/enterprise",
+  "version": "0.1.0",
+  "description": "Enterprise multi-tenant extension for OpenClaw — governance, audit, isolation, collaboration, and reliability",
+  "type": "module",
+  "license": "MIT",
+  "author": "haoyuxiao0223",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/haoyuxiao0223/openclaw-enterprise-plugin.git"
+  },
+  "homepage": "https://github.com/haoyuxiao0223/openclaw-enterprise-plugin#readme",
+  "bugs": {
+    "url": "https://github.com/haoyuxiao0223/openclaw-enterprise-plugin/issues"
+  },
+  "keywords": [
+    "openclaw",
+    "enterprise",
+    "multi-tenant",
+    "rbac",
+    "audit",
+    "governance",
+    "ai-gateway"
+  ],
+  "main": "index.ts",
+  "files": [
+    "index.ts",
+    "bootstrap.ts",
+    "src/",
+    "openclaw.plugin.json",
+    "LICENSE",
+    "README.md"
+  ],
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "lint": "oxlint"
+  },
+  "dependencies": {
+    "hono": "^4.12.8",
+    "kysely": "^0.27.0",
+    "pg": "^8.13.0",
+    "ioredis": "^5.4.0",
+    "bullmq": "^5.0.0",
+    "prom-client": "^15.1.0",
+    "@casl/ability": "^6.7.0",
+    "redlock-universal": "^1.0.0",
+    "@kubernetes/client-node": "^1.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.0",
+    "vitest": "^4.1.0"
+  },
+  "peerDependencies": {
+    "openclaw": ">=2026.1.0"
+  },
+  "peerDependenciesMeta": {
+    "openclaw": {
+      "optional": false
+    }
+  },
+  "openclaw": {
+    "extensions": [
+      "./index.ts"
+    ],
+    "install": {
+      "npmSpec": "@openclaw/enterprise",
+      "defaultChoice": "npm"
+    },
+    "release": {
+      "publishToNpm": true
+    }
+  },
+  "engines": {
+    "node": ">=22.0.0"
+  }
+}

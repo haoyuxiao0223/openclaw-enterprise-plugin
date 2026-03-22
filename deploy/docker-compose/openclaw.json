@@ -1,0 +1,41 @@
+{
+  "enterprise": {
+    "enabled": true,
+    "kernel": {
+      "storage": {
+        "backend": "postgres",
+        "connectionString": "env:DATABASE_URL",
+        "pool": { "min": 2, "max": 10 }
+      },
+      "queue": {
+        "backend": "redis",
+        "url": "env:REDIS_URL"
+      },
+      "cache": {
+        "backend": "redis",
+        "url": "env:REDIS_URL"
+      },
+      "eventBus": {
+        "backend": "redis",
+        "url": "env:REDIS_URL"
+      },
+      "lock": {
+        "backend": "redis",
+        "url": "env:REDIS_URL"
+      }
+    },
+    "governance": {
+      "identity": { "provider": "token" },
+      "authorization": { "engine": "scope" }
+    },
+    "audit": {
+      "sinks": [
+        { "type": "log" },
+        { "type": "storage" }
+      ]
+    },
+    "reliability": {
+      "metrics": { "provider": "prometheus", "port": 9090 }
+    }
+  }
+}
