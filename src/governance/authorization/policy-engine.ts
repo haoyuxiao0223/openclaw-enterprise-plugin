@@ -7,13 +7,14 @@
  */
 
 import type { UserIdentity } from "../identity/identity-provider.ts";
+import type { TenantContext } from "../../kernel/tenant-context.ts";
 
 export interface PolicyEngine {
   initialize(config: Record<string, unknown>): Promise<void>;
   shutdown(): Promise<void>;
 
-  authorize(request: AuthzRequest): Promise<AuthzDecision>;
-  batchAuthorize(requests: AuthzRequest[]): Promise<AuthzDecision[]>;
+  authorize(ctx: TenantContext, request: AuthzRequest): Promise<AuthzDecision>;
+  batchAuthorize(ctx: TenantContext, requests: AuthzRequest[]): Promise<AuthzDecision[]>;
   loadPolicies(policies: PolicyDefinition[]): Promise<void>;
 }
 

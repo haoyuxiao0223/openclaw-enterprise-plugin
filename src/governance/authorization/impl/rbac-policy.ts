@@ -10,6 +10,7 @@
  */
 
 import { PureAbility, AbilityBuilder } from "@casl/ability";
+import type { AbilityTuple } from "@casl/ability";
 import type { TenantContext } from "../../../kernel/tenant-context.ts";
 import type { StorageBackend } from "../../../kernel/storage.ts";
 import { createDefaultTenantContext } from "../../../kernel/tenant-context.ts";
@@ -20,8 +21,10 @@ import type {
   PolicyDefinition,
 } from "../policy-engine.ts";
 
+type AppAbility = PureAbility<AbilityTuple>;
+
 export class RbacPolicyEngine implements PolicyEngine {
-  private abilityCache = new Map<string, PureAbility>();
+  private abilityCache = new Map<string, AppAbility>();
   private policies: PolicyDefinition[] = [];
   private storage: StorageBackend;
 
@@ -64,12 +67,12 @@ export class RbacPolicyEngine implements PolicyEngine {
     }
   }
 
-  private getOrBuildAbility(request: AuthzRequest): PureAbility {
+  private getOrBuildAbility(request: AuthzRequest): AppAbility {
     const cacheKey = `${request.subject.userId}:${request.subject.roles.sort().join(",")}`;
     const cached = this.abilityCache.get(cacheKey);
     if (cached) return cached;
 
-    const builder = new AbilityBuilder(PureAbility);
+    const builder = new AbilityBuilder<AppAbility>(PureAbility);
 
     for (const policy of this.policies) {
       for (const rule of policy.rules) {

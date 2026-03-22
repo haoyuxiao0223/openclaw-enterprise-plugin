@@ -18,12 +18,14 @@ export interface IdentityProvider {
 }
 
 export interface AuthRequest {
-  headers: Record<string, string>;
+  type?: string;
+  credentials?: Record<string, unknown>;
+  headers?: Record<string, string>;
   query?: Record<string, string>;
   body?: unknown;
-  clientIp: string;
-  method: string;
-  path: string;
+  clientIp?: string;
+  method?: string;
+  path?: string;
 }
 
 export interface AuthResult {
@@ -33,6 +35,7 @@ export interface AuthResult {
   expiresAt?: Date;
   accessToken?: string;
   refreshToken?: string;
+  token?: string;
 }
 
 export interface UserIdentity {

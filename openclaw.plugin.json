@@ -10,6 +10,102 @@
         "type": "boolean",
         "default": false,
         "description": "Enable enterprise multi-tenant features"
+      },
+      "kernel": {
+        "type": "object",
+        "description": "Infrastructure backend configuration",
+        "properties": {
+          "storage": {
+            "type": "object",
+            "properties": {
+              "backend": { "type": "string", "enum": ["memory", "postgres"], "default": "memory" },
+              "connectionString": { "type": "string", "description": "PostgreSQL connection string (supports env: prefix)" }
+            }
+          },
+          "queue": {
+            "type": "object",
+            "properties": {
+              "backend": { "type": "string", "enum": ["memory", "redis"], "default": "memory" },
+              "url": { "type": "string", "description": "Redis connection URL (supports env: prefix)" }
+            }
+          },
+          "cache": {
+            "type": "object",
+            "properties": {
+              "backend": { "type": "string", "enum": ["memory", "redis"], "default": "memory" },
+              "url": { "type": "string" }
+            }
+          },
+          "eventBus": {
+            "type": "object",
+            "properties": {
+              "backend": { "type": "string", "enum": ["memory", "redis"], "default": "memory" },
+              "url": { "type": "string" }
+            }
+          },
+          "lock": {
+            "type": "object",
+            "properties": {
+              "backend": { "type": "string", "enum": ["memory", "redis"], "default": "memory" },
+              "url": { "type": "string" }
+            }
+          }
+        }
+      },
+      "governance": {
+        "type": "object",
+        "description": "Identity and authorization configuration",
+        "properties": {
+          "identity": {
+            "type": "object",
+            "properties": {
+              "provider": { "type": "string", "enum": ["token", "oidc"], "default": "token" }
+            }
+          },
+          "authorization": {
+            "type": "object",
+            "properties": {
+              "engine": { "type": "string", "enum": ["scope", "rbac"], "default": "scope" },
+              "defaultRole": { "type": "string" }
+            }
+          }
+        }
+      },
+      "audit": {
+        "type": "object",
+        "description": "Audit pipeline configuration",
+        "properties": {
+          "sinks": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "type": { "type": "string", "enum": ["log", "storage", "webhook", "eventbus"] }
+              },
+              "required": ["type"]
+            }
+          }
+        }
+      },
+      "reliability": {
+        "type": "object",
+        "description": "Reliability and observability configuration",
+        "properties": {
+          "metrics": {
+            "type": "object",
+            "properties": {
+              "provider": { "type": "string", "enum": ["prometheus"], "default": "prometheus" },
+              "port": { "type": "number", "default": 9090 }
+            }
+          },
+          "circuitBreaker": {
+            "type": "object",
+            "properties": {
+              "failureThreshold": { "type": "number", "default": 5 },
+              "resetTimeoutMs": { "type": "number", "default": 30000 }
+            }
+          }
+        }
       }
     }
   }

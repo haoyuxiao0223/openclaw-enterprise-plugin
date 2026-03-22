@@ -5,7 +5,7 @@
  * Leader election via periodic lock renewal.
  */
 
-import Redlock from "redlock-universal";
+import Redlock from "redlock";
 import type IORedis from "ioredis";
 import type {
   LockBackend,

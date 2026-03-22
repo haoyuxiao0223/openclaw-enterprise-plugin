@@ -81,7 +81,7 @@ async function resolveGovernance(
   );
 
   return {
-    identityProvider: new TokenIdentityProvider(kernel.secret),
+    identityProvider: new TokenIdentityProvider({ mode: "none" }),
     policyEngine: new ScopePolicyEngine(),
   };
 }
@@ -109,7 +109,11 @@ async function resolveAudit(
     }
   });
 
-  return { pipeline: new MemoryAuditPipeline(sinks) };
+  const pipeline = new MemoryAuditPipeline();
+  for (const sink of sinks) {
+    pipeline.registerSink(sink);
+  }
+  return { pipeline };
 }
 
 async function resolveCollaboration(
@@ -137,7 +141,7 @@ async function resolveReliability(
   if (!config.reliability?.metrics) return null;
 
   const { HealthCheckerImpl } = await import(
-    "./src/reliability/health/health-checker.ts"
+    "./src/reliability/health/health-checker-impl.ts"
   );
 
   return {

@@ -22,14 +22,17 @@ export interface PostgresConnectionConfig {
 }
 
 export function createKyselyInstance(config: PostgresConnectionConfig): Kysely<DatabaseSchema> {
+  const pool = new pg.Pool({
+    connectionString: config.connectionString,
+    min: config.pool?.min ?? 2,
+    max: config.pool?.max ?? 10,
+    idleTimeoutMillis: config.pool?.idleTimeoutMs ?? 30_000,
+  });
+
   return new Kysely<DatabaseSchema>({
     dialect: new PostgresDialect({
-      pool: new pg.Pool({
-        connectionString: config.connectionString,
-        min: config.pool?.min ?? 2,
-        max: config.pool?.max ?? 10,
-        idleTimeoutMillis: config.pool?.idleTimeoutMs ?? 30_000,
-      }),
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      pool: pool as any,
     }),
   });
 }

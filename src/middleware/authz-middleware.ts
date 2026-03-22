@@ -44,21 +44,17 @@ export function createAuthzMiddleware(opts: AuthzMiddlewareOptions): Middleware 
     const decision = await policyEngine.authorize(ctx, {
       subject: {
         userId: ctx.userId ?? "anonymous",
+        tenantId: ctx.tenantId,
         roles: (req.locals["userRoles"] as string[] | undefined) ?? [],
-        attributes: {},
+        groups: [],
       },
       action: methodToAction(req.method),
       resource: {
         type: resource.type,
         id: resource.id,
         tenantId: ctx.tenantId,
-        attributes: {},
       },
-      environment: {
-        timestamp: new Date(),
-        ip: req.ip,
-        userAgent: req.userAgent,
-      },
+      context: { timestamp: new Date().toISOString(), ip: req.ip, userAgent: req.userAgent },
     });
 
     if (!decision.allowed) {

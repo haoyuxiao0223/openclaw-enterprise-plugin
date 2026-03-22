@@ -103,8 +103,8 @@ export class OidcIdentityProvider implements IdentityProvider {
           roles: [],
           groups: [],
         },
-        token: tokens.access_token,
-        expiresAt: tokens.expires_at ? new Date(tokens.expires_at * 1000) : undefined,
+        accessToken: tokens.access_token,
+        expiresAt: tokens.expires_at ? new Date(Number(tokens.expires_at) * 1000) : undefined,
       };
     } catch (err) {
       return { authenticated: false, error: `Token refresh failed: ${String(err)}` };

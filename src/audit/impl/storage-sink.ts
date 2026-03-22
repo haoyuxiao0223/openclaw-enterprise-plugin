@@ -20,8 +20,11 @@ export class StorageAuditSink implements AuditSink {
     this.storage = storage;
   }
 
+  async initialize(): Promise<void> {}
+  async shutdown(): Promise<void> {}
+
   capabilities(): AuditSinkCapabilities {
-    return { queryable: true, streaming: false, batchSize: 500 };
+    return { queryable: true, realtime: false, tamperProof: false, streaming: false, batchSize: 500 };
   }
 
   async write(event: AuditEvent): Promise<void> {

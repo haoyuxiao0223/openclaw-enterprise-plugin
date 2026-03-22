@@ -124,7 +124,7 @@ export class RedisQueueBackend implements QueueBackend {
         await handler(message);
       },
       {
-        connection: createRedisConnection(this.config),
+        connection: { url: this.config.url },
         concurrency: options?.concurrency ?? 5,
       },
     );
@@ -198,7 +198,7 @@ export class RedisQueueBackend implements QueueBackend {
 
   private getOrCreateQueue(name: string): Queue {
     if (!this.queues.has(name)) {
-      this.queues.set(name, new Queue(name, { connection: createRedisConnection(this.config) }));
+      this.queues.set(name, new Queue(name, { connection: { url: this.config.url } }));
     }
     return this.queues.get(name)!;
   }

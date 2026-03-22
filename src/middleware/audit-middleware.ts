@@ -33,27 +33,28 @@ export function createAuditMiddleware(opts: AuditMiddlewareOptions): Middleware 
       const event: AuditEvent = {
         id: crypto.randomUUID(),
         timestamp: new Date(),
+        version: "1.0",
         tenantId: req.tenantContext?.tenantId ?? "unknown",
         actor: {
           type: "user",
           id: (req.locals["userId"] as string) ?? "anonymous",
         },
         action: `${req.method} ${req.path}`,
-        category: "api",
+        category: "data_access",
         outcome,
         resource: {
           type: req.path.split("/")[3] ?? "unknown",
           id: req.params["id"],
+          tenantId: req.tenantContext?.tenantId ?? "unknown",
         },
         source: {
-          ip: req.ip,
-          userAgent: req.userAgent,
-          component: "api-gateway",
+          service: "api-gateway",
+          requestId: crypto.randomUUID(),
         },
         duration: Date.now() - start,
       };
 
-      auditPipeline.emit(event).catch(() => {});
+      auditPipeline.emit(event);
     }
   };
 }

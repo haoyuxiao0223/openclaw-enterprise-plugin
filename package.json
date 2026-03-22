@@ -28,6 +28,9 @@
     "bootstrap.ts",
     "src/",
     "openclaw.plugin.json",
+    "database-schema.sql",
+    "rls-policies.sql",
+    "deploy/",
     "LICENSE",
     "README.md"
   ],
@@ -44,7 +47,7 @@
     "bullmq": "^5.0.0",
     "prom-client": "^15.1.0",
     "@casl/ability": "^6.7.0",
-    "redlock-universal": "^1.0.0",
+    "redlock": "^5.0.0-beta2",
     "@kubernetes/client-node": "^1.0.0"
   },
   "devDependencies": {

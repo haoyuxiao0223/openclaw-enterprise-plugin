@@ -23,4 +23,6 @@ export interface AuditSinkCapabilities {
   queryable: boolean;
   realtime: boolean;
   tamperProof: boolean;
+  streaming?: boolean;
+  batchSize?: number;
 }

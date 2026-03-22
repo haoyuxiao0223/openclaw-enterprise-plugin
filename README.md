@@ -35,15 +35,20 @@ Enterprise multi-tenant extension for [OpenClaw](https://github.com/openclaw/ope
 └─────────────────────────────────────────────────┘
 ```
 
+## Prerequisites
+
+- **Node.js** >= 22.0.0
+- **OpenClaw** >= 2026.1.0 (peer dependency)
+- **PostgreSQL** 16+ (if using `postgres` storage backend)
+- **Redis** 7+ (if using `redis` queue/cache/lock backend)
+
 ## Installation
 
-### As an OpenClaw Plugin
+### As an OpenClaw Plugin (npm)
 
 ```bash
-# Install OpenClaw
 npm install -g openclaw
 
-# Install the enterprise plugin
 openclaw plugins install @openclaw/enterprise
 ```
 
@@ -53,6 +58,48 @@ openclaw plugins install @openclaw/enterprise
 git clone https://github.com/haoyuxiao0223/openclaw-enterprise-plugin.git
 cd openclaw-enterprise-plugin
 npm install
+```
+
+> **国内用户**：如遇 npm 下载超时，可使用淘宝镜像：
+> ```bash
+> npm install --registry=https://registry.npmmirror.com
+> ```
+
+### Integrating into an Existing OpenClaw Project
+
+To integrate this plugin into a local OpenClaw project:
+
+```bash
+cd /path/to/openclaw
+npm install /path/to/openclaw-enterprise-plugin
+```
+
+Or using `npm link` for development:
+
+```bash
+cd /path/to/openclaw-enterprise-plugin
+npm link
+
+cd /path/to/openclaw
+npm link @openclaw/enterprise
+```
+
+Then register the plugin by adding it to the `plugins` array in your `openclaw.json`:
+
+```json
+{
+  "plugins": ["@openclaw/enterprise"],
+  "enterprise": { ... }
+}
+```
+
+### Database Setup
+
+If using the PostgreSQL backend, initialize the schema before starting:
+
+```bash
+psql $DATABASE_URL -f database-schema.sql
+psql $DATABASE_URL -f rls-policies.sql
 ```
 
 ## Configuration

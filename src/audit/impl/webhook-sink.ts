@@ -23,8 +23,11 @@ export class WebhookAuditSink implements AuditSink {
     this.config = config;
   }
 
+  async initialize(): Promise<void> {}
+  async shutdown(): Promise<void> {}
+
   capabilities(): AuditSinkCapabilities {
-    return { queryable: false, streaming: true, batchSize: 100 };
+    return { queryable: false, realtime: true, tamperProof: false, streaming: true, batchSize: 100 };
   }
 
   async write(event: AuditEvent): Promise<void> {
